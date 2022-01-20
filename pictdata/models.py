@@ -10,9 +10,13 @@ sys.path.append("../")
 from accounts.models import CustomUser
 
 
+def image_directory_path(instance, filename):
+    return 'image/{}.{}'.format(str(uuid.uuid4()), filename.split('.')[-1])
+
+
 class PictDataModel(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    picture = models.ImageField(upload_to='pictdata/')
+    picture = models.ImageField(upload_to=image_directory_path)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=100)
     date = models.DateTimeField(default=timezone.now)

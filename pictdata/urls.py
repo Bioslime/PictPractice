@@ -3,5 +3,6 @@ from . import views
 
 app_name = 'pictdata'
 urlpatterns=[
-    path('pictdata/', views.PictDataApiView.as_view(), name='pictdata')
+    path('picture/', views.PictDataApiView.as_view(), name='pictlist'),
+    path('picture/<uuid:pk>', views.PictDataDetailApiView.as_view(), name='pictdetail'),
 ]

@@ -8,12 +8,12 @@ from .models import PictDataModel, CustomUser
 class PictSerializer(serializers.ModelSerializer):
     class Meta:
         model = PictDataModel
-        fields = ('user', 'picture', 'title', 'date', 'id', )
+        fields = ('user', 'picture', 'title', 'date', 'id',)
         read_only_fields = ('id', 'user', )
 
 
 class CustomuserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('username', 'password', 'email', 'id')
+        fields = ('username', 'password', 'email')
         read_only_fields = ('id', )

@@ -1,28 +1,38 @@
 import React, { useEffect, useState } from 'react';
+import {BrowserRouter, Route, Link, Routes, useHistory, Router, useLocation} from 'react-router-dom';
 import axios from 'axios';
+import PictuerDisplayAxios from './picture_display';
+import PictDetail from './PictDetail';
 
 
 const PictCatch = () => {
-    const [data, setData] = useState([])
+    const [data, setData] = useState([]);
 
     const getPict = async () => {
-        const response = await axios.get('http://localhost:8000/api/pictdata')
+        const response = await axios.get('http://localhost:8000/api/picture')
         console.log(response.data)
         setData(response.data)
+        
     }
+
 
     useEffect(() => {
         getPict()
     },[])
 
     return (
-        <div>
-            <ul>
-                {
-                    data.map(post => <li key={post.id}>{post.title} {post.date}</li>)
-                }
-            </ul>
-        </div>
+        <>
+        <ul>
+            { data.map(post => (
+                <li key={post.id}>
+                    <div>{post.title}</div>
+                    <button type='button' onClick={() => {console.log(post.title)}}>
+                        <PictuerDisplayAxios imageURL={post.picture}/>
+                    </button>
+                </li>
+            ))}
+        </ul>
+        </>
     )
 }
 
