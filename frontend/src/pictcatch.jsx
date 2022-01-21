@@ -26,9 +26,9 @@ const PictCatch = () => {
             { data.map(post => (
                 <li key={post.id}>
                     <div>{post.title}</div>
-                    <button type='button' onClick={() => {console.log(post.title)}}>
-                        <PictuerDisplayAxios imageURL={post.picture}/>
-                    </button>
+                        <Link to={ post.id }>
+                            <PictuerDisplayAxios imageURL={post.picture}/>
+                        </Link>
                 </li>
             ))}
         </ul>

@@ -41,7 +41,7 @@ class CommentModel(models.Model):
 
 class RandomQuestionModel(models.Model):
     question = models.CharField(max_length=100)
-    ID = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     
     def __str__(self):
         return self.question
