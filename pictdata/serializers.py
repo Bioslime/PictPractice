@@ -41,5 +41,5 @@ class PictSerializer(serializers.ModelSerializer):
 class RandomQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = RandomQuestionModel
-        fields = ('question', 'id', )
-        read_only_fields = ('id', )
+        fields = ('question', 'id',)
+        read_only_fields = ('id',)

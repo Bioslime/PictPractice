@@ -18,7 +18,7 @@ const PictDetail = (props) => {
         setUser(response.data.user);
         setDate(response.data.date);
         setPict(<PictuerDisplayAxios imageURL={response.data.picture} />);
-    });
+    }, []);
 
     return(
         <>

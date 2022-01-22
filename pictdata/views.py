@@ -14,18 +14,19 @@ class PictDataApiView(generics.ListCreateAPIView):
 
 
 class PictDataDetailApiView(generics.RetrieveUpdateDestroyAPIView):
-    permissions_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = PictDataModel.objects.all()
     serializer_class = PictSerializer
 
 
 class RandomQuestionsListApiView(generics.ListCreateAPIView):
+    permission_classes = [permissions.AllowAny]
     queryset = RandomQuestionModel.objects.all()
     serializer_class = RandomQuestionSerializer
 
 
 class CustomUserApiView(generics.ListCreateAPIView):
-    permissions_class = [permissions.AllowAny]
+    permission_class = [permissions.AllowAny]
 
     def create(self, request, *args, **kwargs):
         serializer = CustomuserSerializer(data=request.data)
