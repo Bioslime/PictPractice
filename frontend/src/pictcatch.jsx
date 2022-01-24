@@ -3,9 +3,10 @@ import {BrowserRouter, Route, Link, Routes, useHistory, Router, useLocation} fro
 import axios from 'axios';
 import PictuerDisplayAxios from './picture_display';
 import PictDetail from './PictDetail';
+import TokenVerify from './tokenverify';
 
 
-const PictCatch = () => {
+const PictCatch = (props) => {
     const [data, setData] = useState([]);
 
     const getPict = async () => {

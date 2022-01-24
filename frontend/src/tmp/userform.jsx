@@ -28,8 +28,10 @@ const UserForm = (props) => {
         },
     })
     .then( res => {
-        props.cookies.set('user-token', res.data.token);
-        window.location.href = "/";
+        props.cookies.set('access-token', res.data.token,{sameSite: 1, secure: 1});
+        window.location.href = "/login";
+        console.log(res.data)
+        console.log(props.cookies)
     })
     .catch( error => {
       setError(error.response.data)

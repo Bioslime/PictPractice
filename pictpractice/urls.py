@@ -11,5 +11,5 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('api/token/', obtain_jwt_token),
     path('api/token/verify/', verify_jwt_token),
-    path('api/token/refresh', refresh_jwt_token),
+    path('api/token/refresh/', refresh_jwt_token),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) +  staticfiles_urlpatterns()

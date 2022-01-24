@@ -4,12 +4,6 @@ import Header from './header';
 import Footer from './footer';
 import RoutePage from './routerpage';
 
-
-ReactDOM.render(
-    <Header/>,
-    document.getElementById('header')
-)
-
 ReactDOM.render(
     <RoutePage/>,
     document.getElementById('main')

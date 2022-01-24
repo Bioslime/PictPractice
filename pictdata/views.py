@@ -8,7 +8,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 
 class PictDataApiView(generics.ListCreateAPIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
     queryset = PictDataModel.objects.all()
     serializer_class = PictSerializer
 
@@ -27,6 +27,8 @@ class RandomQuestionsListApiView(generics.ListCreateAPIView):
 
 class CustomUserApiView(generics.ListCreateAPIView):
     permission_class = [permissions.AllowAny]
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomuserSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = CustomuserSerializer(data=request.data)
