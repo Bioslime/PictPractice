@@ -14,7 +14,7 @@ class PictDataApiView(generics.ListCreateAPIView):
 
 
 class PictDataDetailApiView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.AllowAny]
     queryset = PictDataModel.objects.all()
     serializer_class = PictSerializer
 

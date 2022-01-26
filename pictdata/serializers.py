@@ -1,4 +1,3 @@
-from tkinter.tix import Tree
 from rest_framework import serializers
 from .models import PictDataModel, CustomUser, RandomQuestionModel
 from rest_framework_jwt.settings import api_settings
@@ -27,7 +26,7 @@ class CustomuserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'password', 'email', 'token')
+        fields = ('username', 'password', 'email', 'token', 'id')
 
 
 
@@ -37,7 +36,7 @@ class PictSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PictDataModel
-        fields = ('user', 'user_uid', 'picture', 'title', 'date', 'id',)
+        fields = ('user', 'picture', 'title', 'date', 'id', 'user_uid')
         read_only_fields = ('id', 'user', )
 
     def create(self, validated_data):
@@ -46,6 +45,7 @@ class PictSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('user not found.:ユーザーが見つかりません')
         del validated_data['user_uid']
         return PictDataModel.objects.create(**validated_data)
+
 
 class RandomQuestionSerializer(serializers.ModelSerializer):
     class Meta:

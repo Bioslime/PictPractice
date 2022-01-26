@@ -1,6 +1,4 @@
 import ReactDOM from 'react-dom';
-import PictCatch from './pictcatch';
-import Header from './header';
 import Footer from './footer';
 import RoutePage from './routerpage';
 

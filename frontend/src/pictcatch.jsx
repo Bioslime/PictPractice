@@ -10,10 +10,9 @@ const PictCatch = (props) => {
     const [data, setData] = useState([]);
 
     const getPict = async () => {
-        const response = await axios.get('http://localhost:8000/api/picture')
+        const response = await axios.get('http://localhost:8000/api/picture/')
         console.log(response.data)
         setData(response.data)
-        
     }
 
 

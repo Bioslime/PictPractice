@@ -2,6 +2,8 @@ import React, {useState, useEffect}  from 'react';
 import { withCookies} from 'react-cookie';
 import axios from 'axios';
 import { Button } from '@material-ui/core';
+import TokenVerify from './tokenverify';
+import LogOut from './Logout';
 
 
 const LoginForm = (props) =>{
@@ -36,7 +38,6 @@ const LoginForm = (props) =>{
     }
 
     return(<>
-        
         <div className="form central-placement">
             <form onSubmit={loginauth}>
             <h3>ログイン</h3>
@@ -68,6 +69,7 @@ const LoginForm = (props) =>{
             </div>
         </form>
         </div>
+        <LogOut/>
     </>);
 }
 

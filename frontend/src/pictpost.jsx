@@ -15,6 +15,7 @@ const PictPost = (props) =>{
         event.preventDefault();
         let formdata = new FormData();
 
+        formdata.append('id', '9edcb928-e639-4542-9c55-dfbf013f3fe4')
         formdata.append('picture',image);
         formdata.append('title', title);
 
@@ -22,8 +23,7 @@ const PictPost = (props) =>{
 
         axios.post(posturi, formdata, {
             header:{
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
             },
         })
         .then( res => {
@@ -53,7 +53,7 @@ const PictPost = (props) =>{
             <div className="form-element">
             <input type="file" name="image" value={image}
                 accept="image/*"
-                enctype="multipart/form-data"
+                multiple
                 className="form-element--image"
                 onChange={(e) => setImage(e.target.value)}
                 placeholder="イラスト"/>

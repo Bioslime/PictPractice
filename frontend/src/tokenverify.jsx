@@ -24,8 +24,13 @@ const TokenVerify = (props) => {
           setError(error.response.data)
         });
     }
+
+    const tokenLog = () => {
+            console.log(props.cookies.get('access-token'));
+    }
     
     useEffect(() => {
+        tokenLog();
         verify();
     },[])
 
