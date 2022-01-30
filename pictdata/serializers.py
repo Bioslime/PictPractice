@@ -1,5 +1,7 @@
+from dataclasses import fields
+from itsdangerous import Serializer
 from rest_framework import serializers
-from .models import PictDataModel, CustomUser, RandomQuestionModel
+from .models import PictDataModel, CustomUser, RandomQuestionModel, CommentModel
 from rest_framework_jwt.settings import api_settings
 
 
@@ -45,6 +47,48 @@ class PictSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('user not found.:ユーザーが見つかりません')
         del validated_data['user_uid']
         return PictDataModel.objects.create(**validated_data)
+
+
+class PictDetailSerializer(serializers.ModelSerializer):
+    user = CustomuserSerializer(read_only=True) 
+    user_uid = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), write_only=True)
+    comments = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PictDataModel
+        fields = ('user', 'picture', 'title', 'date', 'id', 'user_uid', 'comments',)
+        read_only_fields = ('id', 'user', )
+    
+    def get_comments(self, obj):
+        try:
+            comments_data = CommentsSerializer(CommentModel.objects.all().filter(picture = PictDataModel.objects.get(id=obj.id)), many=True).data
+            return comments_data
+
+        except:
+            comments_data = None
+            return comments_data
+
+
+class CommentsSerializer(serializers.ModelSerializer):
+    picture_id = serializers.PrimaryKeyRelatedField(queryset=PictDataModel.objects.all(), write_only=True)
+    user_uid = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), write_only=True)
+
+    class Meta:
+        model = CommentModel
+        fields = ('comment', 'id', 'goodbad', 'picture_id', 'picture', 'user_uid', )
+        read_only_fields = ('id', 'picture')
+    
+    def create(self, validated_data):
+        validated_data['picture'] = validated_data.get('picture_id', None)
+        validated_data['user'] = validated_data.get ('user_uid', None)
+        if validated_data['picture'] is None:
+            raise serializers.ValidationError('picture not found.:イラストが見つかりません')
+        elif validated_data['user'] is None:
+            raise serializers.ValidationError('User not found.: ユーザーが見つかりません')
+        del validated_data['picture_id']
+        del validated_data['user_uid']
+
+        return CommentModel.objects.create(**validated_data)
 
 
 class RandomQuestionSerializer(serializers.ModelSerializer):

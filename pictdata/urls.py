@@ -6,4 +6,5 @@ urlpatterns=[
     path('picture/<uuid:pk>', views.PictDataDetailApiView.as_view()),
     path('questions/', views.RandomQuestionsListApiView.as_view()),
     path('user/', views.CustomUserApiView.as_view()),
+    path('comment/', views.CommntApiView.as_view()),
 ]

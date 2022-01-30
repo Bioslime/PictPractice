@@ -1,7 +1,7 @@
 from flask import Response
 from itsdangerous import serializer
-from .models import PictDataModel, CustomUser, RandomQuestionModel
-from .serializers import PictSerializer, CustomuserSerializer, RandomQuestionSerializer
+from .models import PictDataModel, CustomUser, RandomQuestionModel, CommentModel
+from .serializers import PictSerializer, CustomuserSerializer, PictDetailSerializer,RandomQuestionSerializer, CommentsSerializer
 from rest_framework import generics, status
 from rest_framework import permissions
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
@@ -16,7 +16,7 @@ class PictDataApiView(generics.ListCreateAPIView):
 class PictDataDetailApiView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.AllowAny]
     queryset = PictDataModel.objects.all()
-    serializer_class = PictSerializer
+    serializer_class = PictDetailSerializer
 
 
 class RandomQuestionsListApiView(generics.ListCreateAPIView):
@@ -36,6 +36,12 @@ class CustomUserApiView(generics.ListCreateAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CommntApiView(generics.ListCreateAPIView):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = CommentsSerializer
+    queryset = CommentModel.objects.all()
 
 
 
