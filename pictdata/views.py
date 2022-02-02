@@ -30,18 +30,12 @@ class CustomUserApiView(generics.ListCreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = CustomuserSerializer
 
-    def create(self, request, *args, **kwargs):
-        serializer = CustomuserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class CommntApiView(generics.ListCreateAPIView):
     permission_classes = [permissions.AllowAny]
     serializer_class = CommentsSerializer
     queryset = CommentModel.objects.all()
+
 
 
 

@@ -26,7 +26,9 @@ const CommentsPost = (props) => {
         .then(
             res =>{
                 console.log(res.data);
-            }
+            },
+            props.setLength(props.length+1),
+            setComment(''),
         )
         .catch( error => {
           setError(error.response.data)
@@ -37,8 +39,14 @@ const CommentsPost = (props) => {
         <form onSubmit={submitComment}>
             <input type='text' onChange={(e) => setComment(e.target.value) } value={comment} name='comment'/>
             <Button  variant="contained" type="submit" >追加</Button>
-            <input type='checkbox' id='goodbad' name='goodbad' value={goodbad} onChange={(e) => setGoodbad(e.target.value) }/>
-            <label htmlFor='goodbad'>良い点？</label>
+            
+            <div>
+                <input type='radio' id='good' name='comment_type' value={true}  onChange={e => {setGoodbad(true)}}/>
+                <label htmlform='good'>良い点</label>
+                <input type='radio' id='bad' name='comment_type' value={false}  onChange={e => {setGoodbad(false)}}/>
+                <label htmlform='bad'>悪い点</label>
+            </div>
+            
         </form>
     </>);
 }

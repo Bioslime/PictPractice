@@ -1,12 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-import { Button } from '@material-ui/core';
-import { withCookies } from "react-cookie";
-import TokenVerify from "./tokenverify";
 
 
 const PictPost = (props) =>{
-    const token = props.cookies.get('access-token');
+    const [imageURL, setImageURL] = useState('');
     const [image, setImage] = useState('');
     const [title, setTitle] = useState('');
     const [errorMessage, setError] = useState('');
@@ -15,9 +12,9 @@ const PictPost = (props) =>{
         event.preventDefault();
         let formdata = new FormData();
 
-        formdata.append('id', '9edcb928-e639-4542-9c55-dfbf013f3fe4')
-        formdata.append('picture',image);
+        formdata.append('user_uid', '9edcb928-e639-4542-9c55-dfbf013f3fe4');
         formdata.append('title', title);
+        formdata.append('picture',image);
 
         const posturi = 'http://localhost:8000/api/picture/'
 
@@ -35,39 +32,28 @@ const PictPost = (props) =>{
         });
     }
 
-    return(
-        <>
-        <div className="form central-placement">
+    const getImage = (event) => {
+        const imageFile = event.target.files[0];
+        const imageURL = URL.createObjectURL(imageFile);
+        setImageURL(imageURL);
+        setImage(event.target.files[0]);
+    }
+
+    return(<>
+        <div>テスト</div>
         <form onSubmit={pictSubmit}>
-            <h3>イラスト投稿</h3>
-            { errorMessage.non_field_errors ? <p className="red">{errorMessage.non_field_errors}</p> : null }
-
             <div className="form-element">
-            <input type="text" name="picttitle" value={title}
-                className="form-element--title"
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="タイトル" />
-            { errorMessage.title ? <p className="red">{errorMessage.title}</p> : null }
+                <input type='file' accept = 'image/*' onChange={e => getImage(e)}/>
             </div>
-
             <div className="form-element">
-            <input type="file" name="image" value={image}
-                accept="image/*"
-                multiple
-                className="form-element--image"
-                onChange={(e) => setImage(e.target.value)}
-                placeholder="イラスト"/>
-            { errorMessage.image ? <p className="red">{errorMessage.image}</p> : null }
+                <input type='text' onChange={(e) => setTitle(e.target.value)} value={title} name="picttitle" placeholder="タイトル"/>
             </div>
-
-            <div className="form-element right-placement">
-            <Button variant="contained" color="primary" type="submit" >投稿</Button>
-            </div>
+            <input type='submit' value='提出'/>
         </form>
-        </div>
-        </>
-    );
+        <img  src = {imageURL} height={500}/>
+    </>);
+
 }
 
 
-export default withCookies(PictPost)
+export default PictPost

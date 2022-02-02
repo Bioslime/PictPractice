@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {BrowserRouter, Route, Link, Routes, useHistory, Router, useLocation} from 'react-router-dom';
 import axios from 'axios';
 import PictuerDisplayAxios from './picture_display';
-import PictDetail from './PictDetail';
 import TokenVerify from './tokenverify';
 
 
@@ -17,7 +16,7 @@ const PictCatch = (props) => {
 
 
     useEffect(() => {
-        getPict()
+        getPict();
     },[])
 
     return (

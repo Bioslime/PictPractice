@@ -1,46 +1,28 @@
 import axios from "axios";
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { withCookies } from "react-cookie";
 
 
-const TokenVerify = (props) => {
-    const [token, setToken] = useState(props.cookies.get('access-token'));
-    const [errorMassage, setError] = useState('');
+export function TokenVerify(token) {
     const posturi = 'http://localhost:8000/api/token/verify/'
+    
+    const tokenLog = () => {
+        console.log(token);
+    }
 
     const verify = () =>{
-        axios.post(posturi, {'token':token},{
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-        .then( res => {
-            props.cookies.set('access-token', res.data.token);
-            console.log(res.data)
-        })
-        .catch( error => {
-          setError(error.response.data)
-        });
+            axios.post(posturi, {'token':token},{
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then( res => {
+                token = res.data.token;
+                console.log(res.data)
+            });
     }
-
-    const tokenLog = () => {
-            console.log(props.cookies.get('access-token'));
-    }
+    tokenLog();
+    verify();
     
-    useEffect(() => {
-        tokenLog();
-        verify();
-    },[])
+    return token;
 
-
-    return(
-        <>
-        {errorMassage}
-        {props.cookies.get('access-token')}
-        </>
-    )
-}
-
-export default withCookies(TokenVerify)
+};

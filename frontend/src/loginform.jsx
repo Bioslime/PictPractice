@@ -2,8 +2,6 @@ import React, {useState, useEffect}  from 'react';
 import { withCookies} from 'react-cookie';
 import axios from 'axios';
 import { Button } from '@material-ui/core';
-import TokenVerify from './tokenverify';
-import LogOut from './Logout';
 
 
 const LoginForm = (props) =>{
@@ -29,7 +27,8 @@ const LoginForm = (props) =>{
         })
         .then( res => {
             props.cookies.set('access-token', res.data.token);
-            window.location.href = "/login";
+            props.cookies.set('user_uid', res.data.id);
+            window.location.href = "/";
             console.log(res.data)
         })
         .catch( error => {
@@ -69,7 +68,6 @@ const LoginForm = (props) =>{
             </div>
         </form>
         </div>
-        <LogOut/>
     </>);
 }
 

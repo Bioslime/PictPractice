@@ -3,10 +3,23 @@ import {BrowserRouter, Route, Link, Routes, useHistory, Router, useLocation} fro
 import { Outlet } from 'react-router-dom';
 import { withCookies } from 'react-cookie';
 import { Typography, Button } from '@material-ui/core';
+import {TokenVerify} from './tokenverify';
 
 
 const Header = (props) => {
-    const token = props.cookies.get('access-token')
+    let token = props.cookies.get('access-token');
+
+    const verify = () => {
+      if(token){
+        token = TokenVerify(token);
+        props.cookies.set('access-token', token);
+      }
+    }
+
+    useEffect(() => {
+      verify();
+      },[])
+
     return(
         <>
         <Link to={token ? "/" : "/login"}>
@@ -14,6 +27,16 @@ const Header = (props) => {
             サイトタイトル
           </Typography>
         </Link>
+        <div>
+          <Link to={'/pictpost/'}> イラスト登録 </Link>
+        </div>
+        {token? 
+          <div>
+            <Link to={'/logout/'}>ログアウト</Link>
+          </div>:
+          <div>
+            <Link to={'/login/'}>ログイン</Link>
+          </div>}
         <hr/>
         <Outlet/>
         </>
