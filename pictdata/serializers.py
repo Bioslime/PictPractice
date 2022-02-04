@@ -3,7 +3,7 @@ from itsdangerous import Serializer
 from rest_framework import serializers
 from .models import PictDataModel, CustomUser, RandomQuestionModel, CommentModel
 from rest_framework_jwt.settings import api_settings
-
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 
 class CustomuserSerializer(serializers.ModelSerializer):
@@ -19,13 +19,11 @@ class CustomuserSerializer(serializers.ModelSerializer):
     def get_token(Self,obj):
         jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
         jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-
         payload = jwt_payload_handler(obj)
         token = jwt_encode_handler(payload)
         return token
 
     def create(self, validated_data):
-        print(validated_data)
         password = validated_data.pop('password', None)
         password2 = validated_data.pop('password2', None)
         instance = self.Meta.model(**validated_data)
@@ -33,8 +31,6 @@ class CustomuserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
-
-
 
 
 class PictSerializer(serializers.ModelSerializer):
@@ -101,3 +97,9 @@ class RandomQuestionSerializer(serializers.ModelSerializer):
         model = RandomQuestionModel
         fields = ('question', 'id',)
         read_only_fields = ('id',)
+
+
+class TestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ('token',)

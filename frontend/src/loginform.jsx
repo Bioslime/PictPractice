@@ -26,10 +26,9 @@ const LoginForm = (props) =>{
             },
         })
         .then( res => {
-            props.cookies.set('access-token', res.data.token);
-            props.cookies.set('user_uid', res.data.id);
+            const accesstoken = res.data.token;
+            props.setCookie('access-token', accesstoken);
             window.location.href = "/";
-            console.log(res.data)
         })
         .catch( error => {
           setError(error.response.data)

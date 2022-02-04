@@ -4,7 +4,6 @@ import axios from 'axios';
 import PictuerDisplayAxios from './picture_display';
 import TokenVerify from './tokenverify';
 
-
 const PictCatch = (props) => {
     const [data, setData] = useState([]);
 

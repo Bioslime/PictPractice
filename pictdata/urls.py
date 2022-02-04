@@ -7,4 +7,6 @@ urlpatterns=[
     path('questions/', views.RandomQuestionsListApiView.as_view()),
     path('user/', views.CustomUserApiView.as_view()),
     path('comment/', views.CommntApiView.as_view()),
+    path('test/', views.TestApiView.as_view()),
+    path('hello/', views.HelloWorldAPI.as_view()),
 ]

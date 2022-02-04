@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import {BrowserRouter, Route, Link, Routes, useHistory, Router, useLocation} from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
-import { withCookies } from 'react-cookie';
+import { useCookies, withCookies } from 'react-cookie';
 import { Typography, Button } from '@material-ui/core';
 import {TokenVerify} from './tokenverify';
+import TokenTest from './tmp/tokentest';
 
 
 const Header = (props) => {
-    let token = props.cookies.get('access-token');
-
+    const token = props.cookie['access-token'];
+    
     const verify = () => {
       if(token){
-        token = TokenVerify(token);
-        props.cookies.set('access-token', token);
+        TokenVerify(token);
       }
     }
 
     useEffect(() => {
-      verify();
+      // verify();
       },[])
 
     return(
@@ -38,6 +38,7 @@ const Header = (props) => {
             <Link to={'/login/'}>ログイン</Link>
           </div>}
         <hr/>
+        <TokenTest cookie={props.cookie}/>
         <Outlet/>
         </>
     )

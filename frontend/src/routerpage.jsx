@@ -11,20 +11,22 @@ import LogOut from './logout';
 
 
 const RouterPage = () => {
+    const [cookie, setCookie, deleteCookie] = useCookies(['']);
+    console.log(cookie);
 
     return(
         <>
         <BrowserRouter>
             <CookiesProvider>
             <Routes>
-                <Route path='/' element={<Header/>}>  
+                <Route path='/' element={<Header cookie={cookie}/>}>  
                     <Route path='/' element={<PictCatch/>}/>
                     <Route path='/pictpost' element={<PictPost/>}/>
                     <Route path='/:id' element={<PictDetail/>}/>
                     <Route path='/question' element={<QuestionPost/>}/>
-                    <Route path='/login' element={<LoginForm />}/>
+                    <Route path='/login' element={<LoginForm cookie={cookie} setCookie={setCookie}/>}/>
                     <Route path='/signup' element={<SignUp/>}/>
-                    <Route path='/logout' element={<LogOut/>}/>
+                    <Route path='/logout' element={<LogOut deleteCookie={deleteCookie}/>}/>
                 </Route>
             </Routes>
             </CookiesProvider>

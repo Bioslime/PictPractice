@@ -6,7 +6,7 @@ import { withCookies } from "react-cookie"
 const LogOut = (props) => {
     const logoutjob = (event) => {
         event.preventDefault();
-        props.cookies.set('access-token', "");
+        props.deleteCookie('access-token');
         window.location.href = "/";
     }
 

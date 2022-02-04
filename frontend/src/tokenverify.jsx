@@ -20,7 +20,6 @@ export function TokenVerify(token) {
                 console.log(res.data)
             });
     }
-    tokenLog();
     verify();
     
     return token;
