@@ -42,9 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'rest_framework_jwt',
     'rest_framework.authtoken',
-    'rest_framework_jwt.blacklist',
+    'rest_framework_jwt',
     'widget_tweaks',
     'bootstrap4',
     'django.contrib.sites', 
@@ -55,6 +54,8 @@ INSTALLED_APPS = [
     'sorl.thumbnail', 
     'markdownx',
     'corsheaders',
+    'rest_auth',
+    'rest_auth.registration',
 ]
 
 SITE_ID = 1
@@ -180,6 +181,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
@@ -192,3 +195,4 @@ JWT_AUTH = {
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=28),
 }
 
+REST_USE_JWT = True

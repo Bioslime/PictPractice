@@ -8,6 +8,7 @@ import { CookiesProvider, useCookies } from 'react-cookie';
 import PictPost from './pictpost';
 import SignUp from './sign_up';
 import LogOut from './logout';
+import RoutePage from './root';
 
 
 const RouterPage = () => {
@@ -20,12 +21,13 @@ const RouterPage = () => {
             <CookiesProvider>
             <Routes>
                 <Route path='/' element={<Header cookie={cookie}/>}>  
-                    <Route path='/' element={<PictCatch/>}/>
-                    <Route path='/pictpost' element={<PictPost/>}/>
-                    <Route path='/:id' element={<PictDetail/>}/>
+                    <Route path='/' element={<RoutePage cookie={cookie}/>}/>
+                    <Route path='login' element={<LoginForm cookie={cookie} setCookie={setCookie}/>}/>
+                    <Route path='signup' element={<SignUp setCookie={setCookie}/>}/>
+                    <Route path='/pictpost' element={<PictPost cookie={cookie}/>}/>
+                    <Route path='/home' element={<PictCatch cookie={cookie}/>}/>
+                    <Route path='/home/:id' element={<PictDetail cookie={cookie}/>}/>
                     <Route path='/question' element={<QuestionPost/>}/>
-                    <Route path='/login' element={<LoginForm cookie={cookie} setCookie={setCookie}/>}/>
-                    <Route path='/signup' element={<SignUp/>}/>
                     <Route path='/logout' element={<LogOut deleteCookie={deleteCookie}/>}/>
                 </Route>
             </Routes>

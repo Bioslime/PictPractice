@@ -18,31 +18,42 @@ const PictDetail = (props) => {
     const uri = 'http://localhost:8000/api/picture/' + id;
 
     const getPict = async () => {
-        const response = await axios(uri,);
-        setTitle(response.data.title);
-        setUser(response.data.user);
-        setDate(response.data.date);
-        setPict(<PictuerDisplayAxios imageURL={response.data.picture} />);
-        setComments(response.data.comments);
+        await axios.get(uri, {headers:{
+            'Content-Type': 'application/json;charset=utf-8',
+            'Authorization': 'Bearer ' + props.cookie['access-token'] ,
+        }})
+        .then(res => {
+            setTitle(res.data.title);
+            setUser(res.data.user);
+            setDate(res.data.date);
+            setPict(<PictuerDisplayAxios imageURL={res.data.picture} cookie={props.cookie}/>);
+            setComments(res.data.comments);
+            console.log(length);
+        })
     }
 
     const deletePict = () => {
-        axios.delete(uri)
+        axios.delete(uri,{
+            headers:{
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': 'Bearer ' + props.cookie['access-token'] ,
+            }
+        })
         .then(() =>{
-            window.location.href = "/";
+            window.location.href = "/home";
         })
     }
 
     useEffect( () => {
-        getPict()} , 
+        getPict();} , 
         [length]);
 
     return(
         <>
         <div>{title}</div>
         <div>{pict}</div>
-        <CommentsPost id={id} length={length} setLength={setLength}/>
         <Button onClick={deletePict} color="primary" variant="contained">削除</Button>
+        <CommentsPost id={id} length={length} setLength={setLength} cookie={props.cookie}/>
         <ul>
             {comments.map(item => (
                 <li key={item.id}>{item.comment}</li>

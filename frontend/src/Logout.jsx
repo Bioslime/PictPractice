@@ -1,6 +1,6 @@
 import { Button } from "@material-ui/core";
+import axios from "axios";
 import React from "react"
-import { useState } from "react"
 import { withCookies } from "react-cookie"
 
 const LogOut = (props) => {
@@ -10,10 +10,21 @@ const LogOut = (props) => {
         window.location.href = "/";
     }
 
+    const logoutPost = (event) => {
+        const postUri = 'http://localhost:8000/api/rest-auth/logout/';
+        axios.post(postUri)
+        .then(res=>{
+            props.deleteCookie('access-token');
+            props.deleteCookie('user_uid');
+            console.log(res.data);
+            window.location.href='/login';
+        })
+    }
+
     return(<>
-        <Button onClick={logoutjob} color="primary" variant="contained">ログアウト</Button>
+        <Button onClick={logoutPost} color="primary" variant="contained">ログアウト</Button>
     </>)
 }
 
 
-export default withCookies(LogOut)
+export default LogOut

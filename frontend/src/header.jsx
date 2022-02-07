@@ -1,24 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import {BrowserRouter, Route, Link, Routes, useHistory, Router, useLocation} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
-import { useCookies, withCookies } from 'react-cookie';
-import { Typography, Button } from '@material-ui/core';
-import {TokenVerify} from './tokenverify';
-import TokenTest from './tmp/tokentest';
+import {withCookies } from 'react-cookie';
+import { Typography} from '@material-ui/core';
+import { useEffect } from 'react';
 
 
 const Header = (props) => {
     const token = props.cookie['access-token'];
-    
-    const verify = () => {
-      if(token){
-        TokenVerify(token);
-      }
-    }
 
-    useEffect(() => {
-      // verify();
-      },[])
+    useEffect(()=>{
+      console.log(props.cookie['access-token']);
+    }, []);
 
     return(
         <>
@@ -27,21 +19,27 @@ const Header = (props) => {
             サイトタイトル
           </Typography>
         </Link>
-        <div>
-          <Link to={'/pictpost/'}> イラスト登録 </Link>
-        </div>
         {token? 
           <div>
-            <Link to={'/logout/'}>ログアウト</Link>
-          </div>:
-          <div>
-            <Link to={'/login/'}>ログイン</Link>
+            <div>
+              <Link to={'/logout'}>ログアウト</Link>
+            </div>
+            <div>
+              <Link to={'/pictpost'}> イラスト登録 </Link>
+            </div>
+          </div>
+          :<div>
+            <div>
+              <Link to={'/login'}>ログイン</Link>
+            </div>
+            <div>
+              <Link to={'/signup'}>ユーザー登録</Link>
+            </div>
           </div>}
         <hr/>
-        <TokenTest cookie={props.cookie}/>
         <Outlet/>
         </>
     )
    }
   
-  export default withCookies(Header)
+  export default Header

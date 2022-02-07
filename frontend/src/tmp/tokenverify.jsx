@@ -18,6 +18,9 @@ export function TokenVerify(token) {
             .then( res => {
                 token = res.data.token;
                 console.log(res.data)
+                if(false){
+
+                }
             });
     }
     verify();

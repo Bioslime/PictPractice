@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { useEffect } from "react";
 
 
 const PictPost = (props) =>{
@@ -8,19 +9,22 @@ const PictPost = (props) =>{
     const [title, setTitle] = useState('');
     const [errorMessage, setError] = useState('');
 
+    const token = props.cookie['access-token'];
+
     const pictSubmit = (event) => {
         event.preventDefault();
         let formdata = new FormData();
 
-        formdata.append('user_uid', '9edcb928-e639-4542-9c55-dfbf013f3fe4');
+        formdata.append('user_uid', props.cookie['user_uid']);
         formdata.append('title', title);
         formdata.append('picture',image);
 
         const posturi = 'http://localhost:8000/api/picture/'
 
         axios.post(posturi, formdata, {
-            header:{
+            headers: {
                 'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + token ,
             },
         })
         .then( res => {
@@ -38,6 +42,13 @@ const PictPost = (props) =>{
         setImageURL(imageURL);
         setImage(event.target.files[0]);
     }
+
+
+    useEffect(()=>{
+        if (token === '' || typeof token === 'undefined'){
+            window.location.href = "/login";
+        }
+    }, []);
 
     return(<>
         <div>テスト</div>
