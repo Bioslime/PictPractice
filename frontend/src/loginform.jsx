@@ -38,7 +38,6 @@ const LoginForm = (props) =>{
     }
 
     useEffect(() =>{
-        console.log(token)
         if(token != '' && typeof token != 'undefined'){
             window.location.href='/logout';
         }

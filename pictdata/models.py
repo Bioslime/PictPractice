@@ -20,7 +20,7 @@ class PictDataModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=100)
     date = models.DateTimeField(default=timezone.now)
-    another_pict = models.ForeignKey('self', blank=True, null=True, default=None, on_delete=models.SET_NULL)
+    anotherPict = models.ForeignKey('self', blank=True, null=True, default=None, on_delete=models.SET_NULL)
     
     def __str__(self):
         return self.title

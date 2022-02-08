@@ -1,5 +1,5 @@
 from .models import PictDataModel, CustomUser, RandomQuestionModel, CommentModel
-from .serializers import PictSerializer, CustomuserSerializer, PictDetailSerializer,RandomQuestionSerializer, CommentsSerializer, TestSerializer
+from .serializers import PictSerializer, CustomuserSerializer, PictDetailSerializer,RandomQuestionSerializer, CommentsSerializer, TestSerializer, ComparePictSerializer
 from rest_framework import generics, status
 from rest_framework import permissions
 from rest_framework.views import APIView
@@ -16,6 +16,12 @@ class PictDataApiView(generics.ListCreateAPIView):
         pk = self.request.user.pk
         queryset = self.queryset.filter(user=pk)
         return queryset
+
+
+class ComparePictDataApiView(generics.CreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = PictDataModel.objects.all()
+    serializer_class = ComparePictSerializer
 
 
 class PictDataDetailApiView(generics.RetrieveUpdateDestroyAPIView):

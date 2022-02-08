@@ -5,17 +5,20 @@ import { useEffect,useState,toJson } from 'react';
 import PictuerDisplayAxios from './picture_display';
 import CommentsPost from './comment_post';
 import { Button } from "@material-ui/core";
+import ComparePictPost from './picture_compare_post';
 
 const PictDetail = (props) => {
     const{id} = useParams();
     const [title, setTitle] = useState([]);
-    const [user, setUser] = useState([]);
-    const [date, setDate] = useState([]);
     const [pict, setPict] = useState([]);
     const [comments, setComments] = useState([]);
     const [length, setLength] = useState(0);
+    const [childPict, setChildPict] = useState([]); 
+    const [anotherPict, setAnotherPict] = useState('');
 
     const uri = 'http://localhost:8000/api/picture/' + id;
+    const childbase = 'http://localhost:8000'
+    const jumpUriBase = '/home/'
 
     const getPict = async () => {
         await axios.get(uri, {headers:{
@@ -23,12 +26,17 @@ const PictDetail = (props) => {
             'Authorization': 'Bearer ' + props.cookie['access-token'] ,
         }})
         .then(res => {
+            console.log(res.data)
             setTitle(res.data.title);
-            setUser(res.data.user);
-            setDate(res.data.date);
-            setPict(<PictuerDisplayAxios imageURL={res.data.picture} cookie={props.cookie}/>);
+            setPict(<PictuerDisplayAxios imageURL={res.data.picture} cookie={props.cookie} />);
             setComments(res.data.comments);
-            console.log(length);
+            setAnotherPict(res.data.anotherPict);
+            const childTmp = res.data.childPict.map(item => {
+                return {
+                    'image':<PictuerDisplayAxios imageURL={childbase + item.picture} cookie={props.cookie} imageSize={200}/>,
+                    'id' : item.id,
+            }})
+            setChildPict(childTmp);
         })
     }
 
@@ -45,13 +53,21 @@ const PictDetail = (props) => {
     }
 
     useEffect( () => {
-        getPict();} , 
-        [length]);
+        getPict();
+    }, [length]);
 
     return(
         <>
         <div>{title}</div>
         <div>{pict}</div>
+        <ul>
+            {childPict.map(item => (
+                <li key={item['id']}>
+                    <a href={jumpUriBase + item['id']}>{item['image']}</a>
+                </li>
+            ))}
+        </ul>
+        <ComparePictPost cookie={props.cookie} other_uid={id}/>
         <Button onClick={deletePict} color="primary" variant="contained">削除</Button>
         <CommentsPost id={id} length={length} setLength={setLength} cookie={props.cookie}/>
         <ul>

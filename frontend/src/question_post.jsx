@@ -12,13 +12,11 @@ const QuestionPost = () => {
         const response = await axios.post('http://localhost:8000/api/questions/', {
             question: data.get('question')
         })
-        console.log(response.data)
         getQuestions()
     }
 
     const getQuestions= async () => {
         const response = await axios.get('http://localhost:8000/api/questions')
-        console.log(response.data)
         setQuestions(response.data)
     }
 

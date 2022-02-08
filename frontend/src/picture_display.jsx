@@ -4,10 +4,18 @@ import axios from "axios";
 
 const PictuerDisplayAxios = props => {
     const [image, setImage] = useState([])
+    const sizeGet = () => {
+        let imageSize;
+        if (typeof props.imageSize == 'undefined'){
+            imageSize = 500;
+        }
+        else{
+            imageSize = props.imageSize;
+        }
+        return imageSize
+    }
+
     const getPictuer = async () => {
-        // const response = await axios.get(props.imageURL, {responseType: 'blob',})
-        // console.log(response.data)
-        // setImage([URL.createObjectURL(response.data)])
         await axios.get(props.imageURL,{responseType: 'blob',},{
             headers:{
                 'Content-Type': 'application/json;charset=utf-8',
@@ -23,7 +31,7 @@ const PictuerDisplayAxios = props => {
         getPictuer();
     }, [])
     return(
-        <img src = {image} height={500}/>
+        <img src = {image} height={sizeGet()}/>
     )
 }
 

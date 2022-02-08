@@ -13,7 +13,6 @@ import RoutePage from './root';
 
 const RouterPage = () => {
     const [cookie, setCookie, deleteCookie] = useCookies(['']);
-    console.log(cookie);
 
     return(
         <>

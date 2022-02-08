@@ -9,7 +9,6 @@ const Header = (props) => {
     const token = props.cookie['access-token'];
 
     useEffect(()=>{
-      console.log(props.cookie['access-token']);
     }, []);
 
     return(

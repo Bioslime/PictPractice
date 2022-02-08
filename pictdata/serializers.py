@@ -50,14 +50,36 @@ class PictSerializer(serializers.ModelSerializer):
         return PictDataModel.objects.create(**validated_data)
 
 
+class ComparePictSerializer(PictSerializer):
+    anotherPict = PictSerializer(read_only=True)
+    other_uid = serializers.PrimaryKeyRelatedField(queryset=PictDataModel.objects.all(), write_only=True)
+
+    class Meta:
+        model = PictDataModel
+        fields=('user', 'picture', 'title', 'date', 'id', 'user_uid', 'other_uid', 'anotherPict' )
+        read_only_fields = ('id', 'user', 'anotherPict')
+
+    def create(self, validated_data):
+        validated_data['anotherPict'] = validated_data.get('other_uid', None)
+        if validated_data['anotherPict'] is None:
+            raise serializers.ValidationError('元画像が見つかりません')
+        del validated_data['other_uid']
+        validated_data['user'] = validated_data.get('user_uid', None)
+        if validated_data['user'] is None:
+            raise serializers.ValidationError('user not found.:ユーザーが見つかりません')
+        del validated_data['user_uid']
+        return PictDataModel.objects.create(**validated_data)
+
+
 class PictDetailSerializer(serializers.ModelSerializer):
     user = CustomuserSerializer(read_only=True) 
     user_uid = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), write_only=True)
     comments = serializers.SerializerMethodField()
+    childPict = serializers.SerializerMethodField() 
 
     class Meta:
         model = PictDataModel
-        fields = ('user', 'picture', 'title', 'date', 'id', 'user_uid', 'comments',)
+        fields = ('user', 'picture', 'title', 'date', 'id', 'user_uid', 'comments', 'childPict','anotherPict')
         read_only_fields = ('id', 'user', )
     
     def get_comments(self, obj):
@@ -68,6 +90,15 @@ class PictDetailSerializer(serializers.ModelSerializer):
         except:
             comments_data = None
             return comments_data
+
+    def get_childPict(self, obj):
+        try:
+            childPict_data = PictSerializer(PictDataModel.objects.all().filter(anotherPict = PictDataModel.objects.get(id=obj.id)), many=True).data
+            return childPict_data
+
+        except:
+            childPict_data = None
+            return childPict_data
 
 
 class CommentsSerializer(serializers.ModelSerializer):
