@@ -1,8 +1,13 @@
 import ReactDOM from 'react-dom';
-import PictCatch from './pictcatch';
-
+import Footer from './footer';
+import RoutePage from './routerpage';
 
 ReactDOM.render(
-    <PictCatch/>,
-    document.getElementById('root')
+    <RoutePage/>,
+    document.getElementById('main')
+)
+
+ReactDOM.render(
+    <Footer/>,
+    document.getElementById('footer')
 )
