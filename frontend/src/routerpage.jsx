@@ -9,7 +9,7 @@ import PictPost from './pictpost';
 import SignUp from './sign_up';
 import LogOut from './logout';
 import RoutePage from './root';
-
+import CommentDig from './comment_think';
 
 const RouterPage = () => {
     const [cookie, setCookie, deleteCookie] = useCookies(['']);
@@ -28,6 +28,7 @@ const RouterPage = () => {
                     <Route path='/home/:id' element={<PictDetail cookie={cookie}/>}/>
                     <Route path='/question' element={<QuestionPost/>}/>
                     <Route path='/logout' element={<LogOut deleteCookie={deleteCookie}/>}/>
+                    <Route path='/home/:image_id/comment/:comment_id' element={<CommentDig  cookie={cookie}/>}/>
                 </Route>
             </Routes>
             </CookiesProvider>

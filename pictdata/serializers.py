@@ -93,8 +93,8 @@ class PictDetailSerializer(serializers.ModelSerializer):
 
     def get_childPict(self, obj):
         try:
-            childPict_data = PictSerializer(PictDataModel.objects.all().filter(anotherPict = PictDataModel.objects.get(id=obj.id)), many=True).data
-            return childPict_data
+            childPict_data = PictSerializer(PictDataModel.objects.all().filter(anotherPict = PictDataModel.objects.get(id=obj.id)), many=True)
+            return childPict_data.data
 
         except:
             childPict_data = None
@@ -107,7 +107,7 @@ class CommentsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CommentModel
-        fields = ('comment', 'id', 'goodbad', 'picture_id', 'picture', 'user_uid', )
+        fields = ('comment', 'id', 'goodbad', 'picture_id', 'picture', 'user_uid', 'another_comment')
         read_only_fields = ('id', 'picture')
     
     def create(self, validated_data):
@@ -121,6 +121,19 @@ class CommentsSerializer(serializers.ModelSerializer):
         del validated_data['user_uid']
 
         return CommentModel.objects.create(**validated_data)
+
+
+class CommentDetailSerializer(serializers.ModelSerializer):
+    # childComments = serializers.SerializerMethodField()
+    # comment = CommentsSerializer(read_only=True)
+    # comment_uid = serializers.PrimaryKeyRelatedField(queryset=CommentModel.objects.all(), write_only=True)
+    # picture_id = serializers.PrimaryKeyRelatedField(queryset=PictDataModel.objects.all(), write_only=True)
+    # user_uid = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), write_only=True)
+
+    class Meta:
+        model = CommentModel
+        fields = ('comment', 'id', 'goodbad')
+        read_only_fields = ('id',)
 
 
 class RandomQuestionSerializer(serializers.ModelSerializer):

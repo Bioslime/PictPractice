@@ -1,5 +1,5 @@
 from .models import PictDataModel, CustomUser, RandomQuestionModel, CommentModel
-from .serializers import PictSerializer, CustomuserSerializer, PictDetailSerializer,RandomQuestionSerializer, CommentsSerializer, TestSerializer, ComparePictSerializer
+from .serializers import PictSerializer, CustomuserSerializer, PictDetailSerializer,RandomQuestionSerializer, CommentsSerializer, TestSerializer, ComparePictSerializer, CommentDetailSerializer
 from rest_framework import generics, status
 from rest_framework import permissions
 from rest_framework.views import APIView
@@ -46,6 +46,12 @@ class CommntApiView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = CommentsSerializer
     queryset = CommentModel.objects.all()
+
+
+class CommentDetailApiView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = CommentModel.objects.all()
+    serializer_class = CommentDetailSerializer
 
 
 class TestApiView(APIView):

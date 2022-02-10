@@ -14,9 +14,10 @@ const PictDetail = (props) => {
     const [comments, setComments] = useState([]);
     const [length, setLength] = useState(0);
     const [childPict, setChildPict] = useState([]); 
-    const [anotherPict, setAnotherPict] = useState('');
+    const [parentPict, setParentPict] = useState('');
 
-    const uri = 'http://localhost:8000/api/picture/' + id;
+    const uribase = 'http://localhost:8000/api/picture/';
+    const uri = uribase + id;
     const childbase = 'http://localhost:8000'
     const jumpUriBase = '/home/'
 
@@ -26,17 +27,27 @@ const PictDetail = (props) => {
             'Authorization': 'Bearer ' + props.cookie['access-token'] ,
         }})
         .then(res => {
-            console.log(res.data)
             setTitle(res.data.title);
             setPict(<PictuerDisplayAxios imageURL={res.data.picture} cookie={props.cookie} />);
             setComments(res.data.comments);
-            setAnotherPict(res.data.anotherPict);
             const childTmp = res.data.childPict.map(item => {
                 return {
                     'image':<PictuerDisplayAxios imageURL={childbase + item.picture} cookie={props.cookie} imageSize={200}/>,
                     'id' : item.id,
             }})
             setChildPict(childTmp);
+            anotherPictGeter(uribase + res.data.anotherPict);
+        })
+    }
+
+    const anotherPictGeter = async (APUri) => {
+        console.log(APUri);
+        await axios.get(APUri, {headers:{
+            'Content-Type': 'application/json;charset=utf-8',
+            'Authorization': 'Bearer ' + props.cookie['access-token'] ,
+        }})
+        .then(res => {
+            setParentPict({'image':<PictuerDisplayAxios imageURL={res.data.picture} cookie={props.cookie} />, 'title':res.data.title, 'id':res.data.id})
         })
     }
 
@@ -60,6 +71,8 @@ const PictDetail = (props) => {
         <>
         <div>{title}</div>
         <div>{pict}</div>
+        <div>{parentPict['title']}</div>
+        <div><a href={'/home/' + parentPict['id']}>{parentPict['image']}</a></div>
         <ul>
             {childPict.map(item => (
                 <li key={item['id']}>
@@ -72,7 +85,8 @@ const PictDetail = (props) => {
         <CommentsPost id={id} length={length} setLength={setLength} cookie={props.cookie}/>
         <ul>
             {comments.map(item => (
-                <li key={item.id}>{item.comment}</li>
+                <li key={item.id}> {item.comment} 
+                <Button variant="contained" href={'/home/' + id +'/comment/' + item.id}>深堀</Button></li>
             ))}
         </ul>
         <Link to="../">戻る</Link>

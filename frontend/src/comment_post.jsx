@@ -9,6 +9,11 @@ const CommentsPost = (props) => {
     const [errorMessage, setError] = useState('');
     const [goodbad, setGoodbad] = useState(null);
     const [errorGoodBad, setErrorGoodBad] = useState(''); 
+    let parentid = null
+    
+    if (typeof props.parentid != 'undefined'){
+        parentid = props.parentid;
+    }
 
     const submitComment = (event) => {
         event.preventDefault();
@@ -19,6 +24,9 @@ const CommentsPost = (props) => {
         formdata.append('picture_id', props.id);
         formdata.append('user_uid', props.cookie['user_uid']);
         formdata.append('goodbad', goodbad);
+        if(parentid != null ){
+            formdata.append('another_comment', parentid);
+        }
 
         if(goodbad==null){
             setErrorGoodBad('良い点に関するコメントか悪い点に関するコメントかを選択してください');
