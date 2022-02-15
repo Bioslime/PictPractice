@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import CommentsPost from "./comment_post";
 import PictuerDisplayAxios from "./picture_display";
+import QuestionGeter from "./question_get";
 
 
 const CommentDig = (props) => {
@@ -11,13 +12,12 @@ const CommentDig = (props) => {
     const {image_id} = useParams();
     const uribase = 'http://localhost:8000/api/'
     const [length, setLength] = useState(0);
-    const [parenComment, setParentComment] = useState('');
+    const [parentComment, setParentComment] = useState('');
     const [image, setImage] = useState([]);
-    const [childIds, setChildIds] = useState([]);
+    const [childComments, setChildComments] = useState([]);
 
     const getComment = async (id) => {
         const geturi = uribase + 'comment/' + id;
-        let tmp = '';
         await axios.get(geturi,{headers:{
             'Content-Type': 'application/json;charset=utf-8',
             'Authorization': 'Bearer ' + props.cookie['access-token'] ,
@@ -25,8 +25,8 @@ const CommentDig = (props) => {
         .then(res => {
             console.log(res.data);
             setParentComment(res.data.comment);
+            setChildComments(res.data.child_comments);
         })
-        console.log(tmp);
     } 
 
     const getImage = async (id) => {
@@ -40,14 +40,6 @@ const CommentDig = (props) => {
         })
     }
 
-    const getanyComment = (ids) => {
-        ids.map(item => {
-            return([
-                getComment(item)
-            ])
-        })
-    }
-
     useEffect(()=>{
         getComment(comment_id);
         getImage(image_id);
@@ -55,7 +47,14 @@ const CommentDig = (props) => {
 
     return(<>
         <Link to={'/home/' + image_id}>{image}</Link>
-        <h3>{parenComment}</h3>
+        <h3>{parentComment}</h3>
+        <div>コメント詳細</div><hr/>
+        <ul>
+            {childComments.map(item => 
+            <li key={item.id}>{item.comment}</li>
+            )}
+        </ul>
+        <QuestionGeter cookie={props.cookie}/>
         <CommentsPost id={image_id} parentid={comment_id} length={length} setLength={setLength} cookie={props.cookie}/>
     </>);
 }

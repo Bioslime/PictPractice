@@ -9,7 +9,7 @@ import PictPost from './pictpost';
 import SignUp from './sign_up';
 import LogOut from './logout';
 import RoutePage from './root';
-import CommentDig from './comment_think';
+import CommentDig from './commentDig';
 
 const RouterPage = () => {
     const [cookie, setCookie, deleteCookie] = useCookies(['']);

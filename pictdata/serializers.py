@@ -124,16 +124,20 @@ class CommentsSerializer(serializers.ModelSerializer):
 
 
 class CommentDetailSerializer(serializers.ModelSerializer):
-    # childComments = serializers.SerializerMethodField()
-    # comment = CommentsSerializer(read_only=True)
-    # comment_uid = serializers.PrimaryKeyRelatedField(queryset=CommentModel.objects.all(), write_only=True)
-    # picture_id = serializers.PrimaryKeyRelatedField(queryset=PictDataModel.objects.all(), write_only=True)
-    # user_uid = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), write_only=True)
+    child_comments = serializers.SerializerMethodField()
 
     class Meta:
         model = CommentModel
-        fields = ('comment', 'id', 'goodbad')
+        fields = ('comment', 'id', 'goodbad', 'picture', 'child_comments', )
         read_only_fields = ('id',)
+
+    def get_child_comments(self, obj):
+        try:
+            child_data = CommentsSerializer(CommentModel.objects.all().filter(another_comment=CommentModel.objects.get(id=obj.id)),many=True)
+            return child_data.data
+        except:
+            child_data = None
+            return child_data
 
 
 class RandomQuestionSerializer(serializers.ModelSerializer):

@@ -36,7 +36,9 @@ const PictDetail = (props) => {
                     'id' : item.id,
             }})
             setChildPict(childTmp);
-            anotherPictGeter(uribase + res.data.anotherPict);
+            if (res.data.anotherPict != null) {
+                anotherPictGeter(uribase + res.data.anotherPict);
+            }
         })
     }
 
@@ -47,6 +49,7 @@ const PictDetail = (props) => {
             'Authorization': 'Bearer ' + props.cookie['access-token'] ,
         }})
         .then(res => {
+            console.log(res.data);
             setParentPict({'image':<PictuerDisplayAxios imageURL={res.data.picture} cookie={props.cookie} />, 'title':res.data.title, 'id':res.data.id})
         })
     }
@@ -84,9 +87,12 @@ const PictDetail = (props) => {
         <Button onClick={deletePict} color="primary" variant="contained">削除</Button>
         <CommentsPost id={id} length={length} setLength={setLength} cookie={props.cookie}/>
         <ul>
-            {comments.map(item => (
-                <li key={item.id}> {item.comment} 
-                <Button variant="contained" href={'/home/' + id +'/comment/' + item.id}>深堀</Button></li>
+            {comments.map(item => ( 
+                item.another_comment == null &&
+                <li key={item.id}>
+                    {item.comment}
+                    <Button variant="contained" href={'/home/' + id +'/comment/' + item.id}>深堀</Button>
+                </li>
             ))}
         </ul>
         <Link to="../">戻る</Link>
