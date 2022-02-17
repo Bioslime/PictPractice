@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import CommentsPost from "./comment_post";
 import PictuerDisplayAxios from "./picture_display";
 import QuestionGeter from "./question_get";
+import { loginCheck } from "./loginCheck";
 
 
 const CommentDig = (props) => {
@@ -41,6 +42,7 @@ const CommentDig = (props) => {
     }
 
     useEffect(()=>{
+        loginCheck(props.cookie);
         getComment(comment_id);
         getImage(image_id);
     },[length])

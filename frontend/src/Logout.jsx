@@ -1,7 +1,8 @@
 import { Button } from "@material-ui/core";
 import axios from "axios";
 import React from "react"
-import { withCookies } from "react-cookie"
+import { useEffect } from "react";
+import { loginCheck } from "./loginCheck";
 
 const LogOut = (props) => {
     const logoutjob = (event) => {
@@ -20,6 +21,10 @@ const LogOut = (props) => {
             window.location.href='/login';
         })
     }
+
+    useEffect(()=>{
+        loginCheck(props.cookie);
+    })
 
     return(<>
         <Button onClick={logoutPost} color="primary" variant="contained">ログアウト</Button>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {BrowserRouter, Route, Link, Routes, useHistory, Router, useLocation} from 'react-router-dom';
 import axios from 'axios';
 import PictuerDisplayAxios from './picture_display';
+import { loginCheck } from './loginCheck';
 
 const PictCatch = (props) => {
 
@@ -22,10 +23,7 @@ const PictCatch = (props) => {
     }
 
     useEffect(() => {
-        if(props.cookie['access-token'] == '' || typeof props.cookie['access-token'] == 'undefined'){
-            window.location.href = "/login";
-            return
-        }
+        loginCheck(props.cookie);
         getPict();
     },[])
 

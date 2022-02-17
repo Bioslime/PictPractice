@@ -6,6 +6,7 @@ import PictuerDisplayAxios from './picture_display';
 import CommentsPost from './comment_post';
 import { Button } from "@material-ui/core";
 import ComparePictPost from './picture_compare_post';
+import { loginCheck } from './loginCheck';
 
 const PictDetail = (props) => {
     const{id} = useParams();
@@ -67,6 +68,7 @@ const PictDetail = (props) => {
     }
 
     useEffect( () => {
+        loginCheck(props.cookie);
         getPict();
     }, [length]);
 
