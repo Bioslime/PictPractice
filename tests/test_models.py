@@ -1,5 +1,5 @@
 from django.test import TestCase
-from pictdata.models import PictDataModel
+from pictdata.models import PictDataModel, CommentModel
 from accounts.models import CustomUser
 from django.test import client
 from PIL import Image
@@ -54,3 +54,9 @@ class PictureTestCase(TestCase):
         tmp2 = PictDataModel.objects.get(title='dummy2')
 
         self.assertEqual(tmp2.anotherPict, tmp1)
+
+
+class CommentsTestCase(TestCase):
+    def test_zero_data(self):
+        tmp = CommentModel.objects.all()
+        self.assertEqual(tmp.count(), 0)
