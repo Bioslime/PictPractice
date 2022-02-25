@@ -1,8 +1,5 @@
-from http import client
 from django.test import TestCase
-from django.urls import reverse
 from rest_framework.test import APIClient
-from PIL import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 class UserTestCase(TestCase):
@@ -35,7 +32,9 @@ class PictureTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.url = '/api/picture/'
+        
         self.client.post('/api/user/', data={'username': 'defalut', 'password': 'defalutpass1', 'password2': 'defalutpass1', 'email': 'defalut@test.com'}, formt='json')
+
         res = self.client.get('/api/user/', data={'username': 'defalut', 'password': 'defalutpass1'}, format='json')
         self.token = 'Bearer ' + res.data[0]['token']
         self.user_uid = res.data[0]['id']
@@ -63,7 +62,7 @@ class PictureTestCase(TestCase):
         self.assertEqual(res1.status_code, 201)
         self.assertEqual(len(res2.data), 1)
 
-    def test_post_login(self):
+    def test_post_not_login(self):
         picture_adress = r'.\media\test_image\test.png'
         with open(picture_adress, 'rb') as f:
             img = f.read()
@@ -76,3 +75,33 @@ class PictureTestCase(TestCase):
 
         self.assertEqual(res1.status_code, 401)
         self.assertEqual(len(res2.data), 0)
+
+    def test_no_image(self):
+        data = {'user_uid': self.user_uid, 'title': 'test'}
+
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        res = self.client.post(self.url, data=data, format='multipart')
+
+        self.assertEqual(res.status_code, 400)
+
+    def test_no_title(self):
+        picture_adress = r'.\media\test_image\test.png'
+        with open(picture_adress, 'rb') as f:
+            img = f.read()
+        data = {'user_uid': self.user_uid, 'picture': SimpleUploadedFile('test.png', img, content_type='image/png')}
+
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        res = self.client.post(self.url, data=data, format='multipart')
+
+        self.assertEqual(res.status_code, 400)
+
+    def test_no_user_uid(self):
+        picture_adress = r'.\media\test_image\test.png'
+        with open(picture_adress, 'rb') as f:
+            img = f.read()
+        data = {'picture': SimpleUploadedFile('test.png', img, content_type='image/png'), 'title': 'test'}
+
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        res = self.client.post(self.url, data=data, format='multipart')
+
+        self.assertEqual(res.status_code, 400)
