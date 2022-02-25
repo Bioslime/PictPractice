@@ -3,6 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 from PIL import Image
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 class UserTestCase(TestCase):
     def setUp(self):
@@ -53,8 +54,25 @@ class PictureTestCase(TestCase):
         picture_adress = r'.\media\test_image\test.png'
         with open(picture_adress, 'rb') as f:
             img = f.read()
-        data = {'user_uid': self.user_uid, 'picture': img, 'title': 'test'}
+        data = {'user_uid': self.user_uid, 'picture': SimpleUploadedFile('test.png', img, content_type='image/png'), 'title': 'test'}
 
         self.client.credentials(HTTP_AUTHORIZATION=self.token)
-        res = self.client.post(self.url, data=data, format='multipart')
-        print(res)
+        res1 = self.client.post(self.url, data=data, format='multipart')
+        res2 = self.client.get(self.url)
+
+        self.assertEqual(res1.status_code, 201)
+        self.assertEqual(len(res2.data), 1)
+
+    def test_post_login(self):
+        picture_adress = r'.\media\test_image\test.png'
+        with open(picture_adress, 'rb') as f:
+            img = f.read()
+        data = {'user_uid': self.user_uid, 'picture': SimpleUploadedFile('test.png', img, content_type='image/png'), 'title': 'test'}
+
+        res1 = self.client.post(self.url, data=data, format='multipart')
+        
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        res2 = self.client.get(self.url)
+
+        self.assertEqual(res1.status_code, 401)
+        self.assertEqual(len(res2.data), 0)
