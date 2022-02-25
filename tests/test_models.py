@@ -1,9 +1,6 @@
 from django.test import TestCase
-from pictdata.models import PictDataModel, CommentModel
+from pictdata.models import PictDataModel, CommentModel, RandomQuestionModel
 from accounts.models import CustomUser
-from django.test import client
-from PIL import Image
-from io import BytesIO
 
 class CustomUserTestCase(TestCase):
     def setUp(self):
@@ -57,6 +54,34 @@ class PictureTestCase(TestCase):
 
 
 class CommentsTestCase(TestCase):
-    def test_zero_data(self):
+    def setUp(self):
+        CustomUser.objects.create(username='defalut', password='defalut001', email='defalut@def.com')
+        user = CustomUser.objects.get(username='defalut')
+        dummy_adress = r'C.\media\test_image\test.png'
+        PictDataModel.objects.create(user=user, title='dummy', picture=dummy_adress)
+
+    def test_zero_check(self):
         tmp = CommentModel.objects.all()
         self.assertEqual(tmp.count(), 0)
+
+    def test_comment_register(self):
+        user = CustomUser.objects.get(username='defalut')
+        picture = PictDataModel.objects.get(title='dummy')
+        comment = 'test'
+        goodbad = True
+        CommentModel.objects.create(user=user, picture=picture, comment=comment, goodbad=goodbad)
+
+        tmp = CommentModel.objects.get(user=user)
+
+        self.assertEqual(tmp.comment, comment)
+
+
+class QuestionModelTestCase(TestCase):
+    def test_zero_check(self):
+        tmp = RandomQuestionModel.objects.all()
+
+        self.assertEqual(tmp.count(), 0)
+
+    def test_question_register(self):
+        question = '質問例'
+        
