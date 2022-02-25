@@ -2,7 +2,7 @@ from http import client
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
-
+from PIL import Image
 
 class UserTestCase(TestCase):
     def setUp(self):
@@ -28,3 +28,33 @@ class UserTestCase(TestCase):
     def test_user_login_failed(self):
         res = self.client.login(username='dummy', password='dummypass1')
         self.assertFalse(res)
+
+
+class PictureTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.url = '/api/picture/'
+        self.client.post('/api/user/', data={'username': 'defalut', 'password': 'defalutpass1', 'password2': 'defalutpass1', 'email': 'defalut@test.com'}, formt='json')
+        res = self.client.get('/api/user/', data={'username': 'defalut', 'password': 'defalutpass1'}, format='json')
+        self.token = 'Bearer ' + res.data[0]['token']
+        self.user_uid = res.data[0]['id']
+
+    def test_get_not_login(self):
+        res = self.client.get(self.url, format='json')
+        self.assertEqual(res.status_code, 401)
+
+    def test_get_login(self):
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        res = self.client.get(self.url, format='json')
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(len(res.data), 0)
+
+    def test_post_login(self):
+        picture_adress = r'.\media\test_image\test.png'
+        with open(picture_adress, 'rb') as f:
+            img = f.read()
+        data = {'user_uid': self.user_uid, 'picture': img, 'title': 'test'}
+
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        res = self.client.post(self.url, data=data, format='multipart')
+        print(res)
