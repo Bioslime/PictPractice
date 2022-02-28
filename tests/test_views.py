@@ -105,3 +105,27 @@ class PictureTestCase(TestCase):
         res = self.client.post(self.url, data=data, format='multipart')
 
         self.assertEqual(res.status_code, 400)
+
+    def test_with_notherPicture(self):
+        picture_adress = r'.\media\test_image\test.png'
+        with open(picture_adress, 'rb') as f:
+            img = f.read()
+        data1 = {'user_uid': self.user_uid, 'picture': SimpleUploadedFile('test1.png', img, content_type='image/png'), 'title': 'test1'}
+        self.client.credentials(HTTP_AUTHORIZATION=self.token)
+        res1 = self.client.post(self.url, data=data1, format='multipart')
+        url = self.url + res1.data['id'] + '/'
+        other_uid = self.client.get(url).data['id']
+
+        data2 = {'user_uid': self.user_uid, 'picture': SimpleUploadedFile('test2.png', img, content_type='image/png'), 'title': 'test2', 'other_uid':other_uid}
+        res2 = self.client.post(self.url+'compare/', data=data2, format='multipart')
+        url = self.url + res2.data['id'] + '/'
+        res3 = self.client.get(url)
+
+        self.assertEqual(res1.status_code, 201)
+        self.assertEqual(str(res3.data['anotherPict']), other_uid)
+
+
+
+class RandomModelTestCase(TestCase):
+    def setUp(self):
+        pass
