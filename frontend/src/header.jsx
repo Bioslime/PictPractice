@@ -26,6 +26,9 @@ const Header = (props) => {
             <div>
               <Link to={'/pictpost'}> イラスト登録 </Link>
             </div>
+            <div>
+              <Link to={'/question'}>質問追加</Link>
+            </div>
           </div>
           :<div>
             <div>

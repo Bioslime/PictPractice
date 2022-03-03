@@ -38,7 +38,6 @@ class UserTestCase(TestCase):
         self.assertEqual(res.status_code, 400)
 
 
-
 class PictureTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
@@ -117,7 +116,7 @@ class PictureTestCase(TestCase):
 
         self.assertEqual(res.status_code, 400)
 
-    def test_with_notherPicture(self):
+    def test_with_otherPicture(self):
         picture_adress = r'.\media\test_image\test.png'
         with open(picture_adress, 'rb') as f:
             img = f.read()
@@ -134,7 +133,6 @@ class PictureTestCase(TestCase):
 
         self.assertEqual(res1.status_code, 201)
         self.assertEqual(str(res3.data['anotherPict']), other_uid)
-
 
 
 class RandomModelTestCase(TestCase):
@@ -175,7 +173,6 @@ class RandomModelTestCase(TestCase):
         self.client.credentials(HTTP_AUTHORIZATION=self.token)
         res = self.client.post(self.url, data=data)
         self.assertEqual(res.status_code, 400)
-
 
 
 class CommentTestCase(TestCase):

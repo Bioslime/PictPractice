@@ -7,6 +7,7 @@ import CommentsPost from './comment_post';
 import { Button } from "@material-ui/core";
 import ComparePictPost from './picture_compare_post';
 import { loginCheck } from './loginCheck';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const PictDetail = (props) => {
     const{id} = useParams();
@@ -18,7 +19,7 @@ const PictDetail = (props) => {
     const [parentPict, setParentPict] = useState('');
 
     const uribase = 'http://localhost:8000/api/picture/';
-    const uri = uribase + id;
+    const uri = uribase + id + '/';
     const childbase = 'http://localhost:8000'
     const jumpUriBase = '/home/'
 
@@ -38,7 +39,7 @@ const PictDetail = (props) => {
             }})
             setChildPict(childTmp);
             if (res.data.anotherPict != null) {
-                anotherPictGeter(uribase + res.data.anotherPict);
+                anotherPictGeter(uribase + res.data.anotherPict + '/');
             }
         })
     }

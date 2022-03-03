@@ -18,7 +18,7 @@ const CommentDig = (props) => {
     const [childComments, setChildComments] = useState([]);
 
     const getComment = async (id) => {
-        const geturi = uribase + 'comment/' + id;
+        const geturi = uribase + 'comment/' + id  + '/';
         await axios.get(geturi,{headers:{
             'Content-Type': 'application/json;charset=utf-8',
             'Authorization': 'Bearer ' + props.cookie['access-token'] ,
@@ -31,7 +31,7 @@ const CommentDig = (props) => {
     } 
 
     const getImage = async (id) => {
-        const geturi = uribase + 'picture/' + id; 
+        const geturi = uribase + 'picture/' + id  + '/'; 
         await axios.get(geturi,{headers:{
             'Content-Type': 'application/json;charset=utf-8',
             'Authorization': 'Bearer ' + props.cookie['access-token'] ,

@@ -27,7 +27,7 @@ const RouterPage = () => {
                     <Route path='/home' element={<PictCatch cookie={cookie}/>}/>
                     <Route path='/home/:id' element={<PictDetail cookie={cookie}/>}/>
                     <Route path='/question' element={<QuestionPost/>}/>
-                    <Route path='/logout' element={<LogOut deleteCookie={deleteCookie}/>}/>
+                    <Route path='/logout' element={<LogOut deleteCookie={deleteCookie} cookie={cookie}/>}/>
                     <Route path='/home/:image_id/comment/:comment_id' element={<CommentDig  cookie={cookie}/>}/>
                 </Route>
             </Routes>

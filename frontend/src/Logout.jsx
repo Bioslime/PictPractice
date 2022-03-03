@@ -5,11 +5,6 @@ import { useEffect } from "react";
 import { loginCheck } from "./loginCheck";
 
 const LogOut = (props) => {
-    const logoutjob = (event) => {
-        event.preventDefault();
-        props.deleteCookie('access-token');
-        window.location.href = "/";
-    }
 
     const logoutPost = (event) => {
         const postUri = 'http://localhost:8000/api/rest-auth/logout/';
