@@ -7,7 +7,6 @@ import CommentsPost from './comment_post';
 import { Button } from "@material-ui/core";
 import ComparePictPost from './picture_compare_post';
 import { loginCheck } from './loginCheck';
-import Autocomplete from '@mui/material/Autocomplete';
 
 const PictDetail = (props) => {
     const{id} = useParams();
